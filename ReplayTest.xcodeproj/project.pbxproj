@@ -21,7 +21,6 @@
 		39BC0394242F936400A25863 /* BroadcastSetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 39BC0393242F936400A25863 /* BroadcastSetupViewController.m */; };
 		39BC0398242F936400A25863 /* retestSetupUI.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 39BC038D242F936400A25863 /* retestSetupUI.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		39BC039B242F936500A25863 /* retest.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 39BC0380242F936400A25863 /* retest.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		3C3766EC33138782E9FD74CB /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		66BEEBCC323B04F2488880A3 /* libPods-retest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F42A1B9551B6324787F03F0 /* libPods-retest.a */; };
 		FBDAC74F3A6A8F52F2DFC27D /* libPods-ReplayTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 247F2ECF0DAFE6379FEF6D10 /* libPods-ReplayTest.a */; };
 /* End PBXBuildFile section */
@@ -94,7 +93,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3C3766EC33138782E9FD74CB /* (null) in Frameworks */,
 				FBDAC74F3A6A8F52F2DFC27D /* libPods-ReplayTest.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
