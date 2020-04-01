@@ -36,6 +36,8 @@
     self.roomId = @"";
     
     [[RCIMClient sharedRCIMClient] initWithAppKey:self.appKey];
+    [[RCIMClient sharedRCIMClient] setLogLevel:RC_Log_Level_Verbose];
+    
     // 连接 IM
     [[RCIMClient sharedRCIMClient] connectWithToken:self.token success:^(NSString *userId) {
         NSLog(@"connectWithToken success userId: %@", userId);
@@ -68,7 +70,7 @@
 }
 
 - (void)processSampleBuffer:(CMSampleBufferRef)sampleBuffer withType:(RPSampleBufferType)sampleBufferType {
-    NSLog(@"processSampleBuffer: %zd", sampleBufferType);
+    //NSLog(@"processSampleBuffer: %zd", sampleBufferType);
     switch (sampleBufferType) {
         case RPSampleBufferTypeVideo:
             // Handle video sample buffer

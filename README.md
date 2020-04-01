@@ -28,6 +28,23 @@
 ```
 - (void)broadcastStartedWithSetupInfo:(NSDictionary<NSString *,NSObject *> *)setupInfo 
 ```
-方法参数中, 提供给 RTCLib 使用. 如果在 SampleHandler.m 中指定 AppKey, Token, RoomID 也可以使用
 
+ 方法参数中, 提供给 RTCLib 使用. 如果在 SampleHandler.m 中指定 AppKey, Token, RoomID 也可以使用
 
+8. 受限于 RongIMLib 库中的默认2分钟断开连接的限制, 需要修改如下 pod 路径下的 .plist 配置文件:
+ ReplayTest/Pods/RongCloudIM/RongCloudIM/RCConfig.plist
+ 在此文件中添加:
+
+ ```
+ {
+     Connection : {
+ 						ForceKeepAlive : 1
+                  }
+ 
+ 
+ }
+ ```
+ 其中: Connection 和 ForceKeepAlive 类型为 Key值, 1 的类型为 Number
+ 
+ 
+ 
