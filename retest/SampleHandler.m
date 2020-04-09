@@ -93,6 +93,9 @@
     param.videoSizePreset = RongRTCVideoSizePreset1280x720;
     self.videoOutputStream = [[RongRTCAVOutputStream alloc] initWithParameters:param tag:@"RongRTCScreenVideo"];
     [self.room publishAVStream:self.videoOutputStream extra:@"" completion:^(BOOL isSuccess, RongRTCCode desc) {
+        if (isSuccess) {
+            NSLog(@"发布自定义流成功");
+        }
     }];
 }
 
