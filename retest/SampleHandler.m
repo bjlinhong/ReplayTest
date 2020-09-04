@@ -12,10 +12,10 @@
 #import <RongIMLib/RongIMLib.h>
 
 
-@interface SampleHandler () <RongRTCRoomDelegate>
+@interface SampleHandler () <RCRTCRoomEventDelegate>
 
-@property (nonatomic, strong) RongRTCRoom *room;
-@property (nonatomic, strong) RongRTCAVOutputStream *videoOutputStream;
+@property (nonatomic, strong) RCRTCRoom *room;
+@property (nonatomic, strong) RCRTCVideoOutputStream *videoOutputStream;
 @property (nonatomic, strong) NSString *appKey;
 @property (nonatomic, strong) NSString *token;
 @property (nonatomic, strong) NSString *roomId;
@@ -39,18 +39,20 @@
     [[RCIMClient sharedRCIMClient] setLogLevel:RC_Log_Level_Verbose];
     
     // 连接 IM
-    [[RCIMClient sharedRCIMClient] connectWithToken:self.token success:^(NSString *userId) {
+    [[RCIMClient sharedRCIMClient] connectWithToken:self.token
+                                           dbOpened:^(RCDBErrorCode code) {
+        NSLog(@"dbOpened: %zd", code);
+    } success:^(NSString *userId) {
         NSLog(@"connectWithToken success userId: %@", userId);
         // 加入房间
-        [[RongRTCEngine sharedEngine] joinRoom:self.roomId completion:^(RongRTCRoom * _Nullable room, RongRTCCode code) {
+        [[RCRTCEngine sharedInstance] joinRoom:self.roomId
+                                    completion:^(RCRTCRoom * _Nullable room, RCRTCCode code) {
             self.room = room;
             self.room.delegate = self;
             [self publishScreenStream];
         }];
-    } error:^(RCConnectErrorCode status) {
-        NSLog(@"ERROR status: %zd", status);
-    } tokenIncorrect:^{
-        NSLog(@"tokenIncorrect");
+    } error:^(RCConnectErrorCode errorCode) {
+        NSLog(@"ERROR status: %zd", errorCode);
     }];
 }
 
@@ -64,7 +66,8 @@
 
 - (void)broadcastFinished {
     // User has requested to finish the broadcast.
-    [[RongRTCEngine sharedEngine] leaveRoom:self.roomId completion:^(BOOL isSuccess, RongRTCCode code) {
+    [[RCRTCEngine sharedInstance] leaveRoom:self.roomId
+                                 completion:^(BOOL isSuccess, RCRTCCode code) {
         self.videoOutputStream = nil;
     }];
 }
@@ -89,13 +92,16 @@
 
 #pragma mark - Private
 - (void)publishScreenStream {
-    RongRTCStreamParams *param = [[RongRTCStreamParams alloc] init];
-    param.videoSizePreset = RongRTCVideoSizePreset1280x720;
-    self.videoOutputStream = [[RongRTCAVOutputStream alloc] initWithParameters:param tag:@"RongRTCScreenVideo"];
-    [self.room publishAVStream:self.videoOutputStream extra:@"" completion:^(BOOL isSuccess, RongRTCCode desc) {
-        if (isSuccess) {
+    self.videoOutputStream = [[RCRTCVideoOutputStream alloc] initVideoOutputStreamWithTag:@"RCRTCScreenVideo"];
+    RCRTCVideoStreamConfig *videoConfig = self.videoOutputStream.videoConfig;
+    videoConfig.videoSizePreset = RCRTCVideoSizePreset1280x720;
+    [self.videoOutputStream setVideoConfig:videoConfig];
+    
+    [self.room.localUser publishStream:self.videoOutputStream completion:^(BOOL isSuccess, RCRTCCode desc) {
+        if (isSuccess)
             NSLog(@"发布自定义流成功");
-        }
+        else
+            NSLog(@"发布自定义流失败");
     }];
 }
 
